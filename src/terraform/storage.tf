@@ -1,5 +1,3 @@
-data "azurerm_client_config" "current" {}
-
 resource "azurerm_storage_account" "storage" {
   name                      = var.storage_account_name
   resource_group_name       = azurerm_resource_group.rg.name
@@ -25,14 +23,24 @@ resource "azurerm_role_assignment" "storage_client" {
   principal_id         = data.azurerm_client_config.current.object_id
 }
 
-resource "azurerm_role_assignment" "openvpn" {
-  scope                = azurerm_storage_account.storage.id
-  role_definition_name = "Storage Blob Data Owner"
-  principal_id         = azurerm_linux_virtual_machine.openvpn.identity.0.principal_id
+resource "azurerm_private_endpoint" "blobstorage" {
+  name                    = var.storage_account_name
+  resource_group_name     = azurerm_resource_group.rg.name
+  location                = azurerm_resource_group.rg.location
+  subnet_id               = module.network1.subnet_id
+
+  private_service_connection {
+    name                              = "blob-${var.storage_account_name}"
+    private_connection_resource_id    = azurerm_storage_account.storage.id
+    is_manual_connection              = false
+    subresource_names                 = ["blob"]
+  }
 }
 
-resource "azurerm_role_assignment" "vm" {
-  scope                = azurerm_storage_account.storage.id
-  role_definition_name = "Storage Blob Data Owner"
-  principal_id         = azurerm_linux_virtual_machine.vm.identity.0.principal_id
+resource "azurerm_private_dns_a_record" "storage" {
+  name                = var.storage_account_name
+  zone_name           = azurerm_private_dns_zone.privatelink_dns.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 300
+  records             = [azurerm_private_endpoint.blobstorage.private_service_connection[0].private_ip_address]
 }

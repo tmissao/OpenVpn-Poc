@@ -1,13 +1,11 @@
+data "azurerm_client_config" "current" {}
+
 variable "project_name" { 
   default = "openvpn" 
 }
 
 variable "location" {
   default = "East US"
-}
-
-variable "azure_dns_service_ip" {
-  default = "168.63.129.16"
 }
 
 variable "vnet_name" {
@@ -18,24 +16,16 @@ variable "vnet_address" {
   default = "20.20.0.0/16"
 }
 
-variable "subnet_name" {
-  default = "default"
-}
-
 variable "subnet_address" {
   default = "20.20.0.224/27"
 }
 
 variable "vnet2_name" {
-  default = "openpvn-pair-vnet"
+  default = "openpvn-paired"
 }
 
 variable "vnet2_address" {
   default = "30.30.0.0/16"
-}
-
-variable "subnet2_name" {
-  default = "default"
 }
 
 variable "subnet2_address" {
@@ -70,9 +60,9 @@ variable "openvpn_ca_values" {
   default = {
     country = "BR"
     province = "SP"
-    city = "Sao Paulo"
-    organization = "Acqio"
-    email = "contato@esfera5.com.br"
+    city = "Itu"
+    organization = "CodeFeeling"
+    email = "contato@ecodefeeling.com.br"
   }
 }
 
@@ -95,4 +85,12 @@ variable "storage_account_kind" {
 }
 variable "storage_account_replication_type" {
   default = "LRS"
+}
+
+variable "simple_vm_name" {
+  default = "simple-vm"
+}
+
+variable "simple_vm_size" {
+  default = "Standard_B2s"
 }
