@@ -9,7 +9,6 @@ This project intends to build a VPN using OpenVPN, it is desired to build de fol
 
 - [Create an Azure Account](https://azure.microsoft.com/en-us/free/)
 - [Install TF_ENV](https://github.com/tfutils/tfenv)
-- Public and Private SSH Key located on `~/.ssh/id_rsa.pub` and `~/.ssh/id_rsa`
 - [Install OpenVPN Client](https://openvpn.net/client-connect-vpn-for-windows/)
 
 ---
@@ -41,11 +40,11 @@ First of all, will be necessary to execute a shell script at OpenVpn server usin
 ```bash
 # executes the shell script to create the client certificate
 # ssh <openvpn-vm-user>@<vm-public-ip> 'bash client-configs/make_config.sh <client-name>'
-ssh adminuser@13.68.155.51 'bash client-configs/make_config.sh tiago.missao'
+ssh -i ../../keys/key adminuser@13.68.155.51 'bash client-configs/make_config.sh tiago.missao'
 
 # downloads the generated client certificate
 # ssh <openvpn-vm-user>@<vm-public-ip>:client-configs/files/<client-name>.ovpn .
-sftp adminuser@13.68.155.51:client-configs/files/tiago.missao.ovpn .
+sftp -i ../../keys/key adminuser@13.68.155.51:client-configs/files/tiago.missao.ovpn .
 ```
 
 After that, move the created certificate to the OpenVpn Client configuration folder ( on windows it will be `C:\Program Files\OpenVPN\config`) and initiate the connection on the OpenVpn Client

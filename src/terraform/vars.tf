@@ -37,11 +37,11 @@ variable "openvpnserver_vm_user" {
 }
 
 variable "openvpnserver_vm_user_ssh_path" {
-  default = "~/.ssh/id_rsa.pub"
+  default = "../../keys/key.pub"
 }
 
 variable "openvpnserver_vm_user_ssh_private_key_path" {
-  default = "~/.ssh/id_rsa"
+  default = "../../keys/key"
 }
 
 variable "openvpn_protocol" {

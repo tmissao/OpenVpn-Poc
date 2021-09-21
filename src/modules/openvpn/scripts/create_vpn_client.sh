@@ -9,7 +9,8 @@ OUTPUT_DIR=$CLIENT_CONFIG_FILES_PATH
 BASE_CONFIG=$CLIENT_CONFIG_FOLDER/base.conf
 
 cd $RSA_FOLDER
-printf 'yes\n' | ./easyrsa gen-req $1 nopass
+printf 'yes' | ./easyrsa revoke $1
+printf '\n' | ./easyrsa gen-req $1 nopass
 cp ./pki/private/$1.key $CLIENT_CONFIG_KEYS_PATH
 printf 'yes' | ./easyrsa sign-req client $1
 cp ./pki/issued/$1.crt $CLIENT_CONFIG_KEYS_PATH
